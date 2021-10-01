@@ -56,7 +56,7 @@ export default {
   mounted() {
     this.getMap()
     // var map = this.tt.map({
-    //   key: 'K35TCsKGW4huvzCAhYmRLYjgHewqTyhe',
+    //   key: '',
     //   container: 'map',
     //   center: [this.lat, this.long],
     //   zoom: 15,
@@ -69,7 +69,7 @@ export default {
   methods:{
     getMap(){
     var map = this.tt.map({
-      key: 'K35TCsKGW4huvzCAhYmRLYjgHewqTyhe',
+      key: '',
       container: 'map',
       center: [this.long, this.lat],
       zoom: 15,
