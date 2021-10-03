@@ -33,6 +33,7 @@
 
         <!-- </form> -->
       </div>
+      <div>{{address}}</div>
     </div>
     <div class="row text-center">
       <div class="col-12">
@@ -50,29 +51,21 @@ export default {
       tt: window.tt,
       long: 9.191383,
       lat: 45.464211,
+      key: 'your key',
     }
   },
 
   mounted() {
     this.getMap()
-    // var map = this.tt.map({
-    //   key: '',
-    //   container: 'map',
-    //   center: [this.lat, this.long],
-    //   zoom: 15,
-    // });
-    // map.addControl(new this.tt.FullscreenControl());
-    // map.addControl(new this.tt.NavigationControl());
-    // this.addMarker(map);
   },
 
   methods:{
     getMap(){
     var map = this.tt.map({
-      key: '',
+      key: this.key,
       container: 'map',
       center: [this.long, this.lat],
-      zoom: 15,
+      zoom: 16,
     });
     map.addControl(new this.tt.FullscreenControl());
     map.addControl(new this.tt.NavigationControl());
@@ -81,20 +74,23 @@ export default {
 
     addMarker(map){
       var location = [this.long, this.lat];
-      var popupOffsets = {
-        top: [0, 0],
-        bottom: [0, -30],
-        'bottom-right': [0, -30],
-        'bottom-left': [0, -30],
-        left: [25, -35],
-        right: [-25, -35]
-      } 
+      var popupOffsets = 25;
 
       var marker = new this.tt.Marker().setLngLat(location).addTo(map);
-      var popup = new this.tt.Popup({offset: popupOffsets}).setHTML("ecco!");
+      var popup = new this.tt.Popup({offset: popupOffsets});
+      this.reverseGeocoding(marker, popup);
       marker.setPopup(popup).togglePopup();
-    }
+    },
 
+    reverseGeocoding(marker, popup) { 
+      this.tt.services.reverseGeocode({ 
+          key: this.key, 
+          position: marker.getLngLat() 
+      }).then( function( result ){ 
+          popup.setHTML(result.addresses[0].address.freeformAddress); 
+      }) 
+    },
+    
   }
 
 
