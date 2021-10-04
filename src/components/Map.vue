@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    <div class="row text-center mt-3 mb-3">
+    <div class="row text-center mt-3 ">
       <div class="col-12">
-        <!-- <form action=""> -->
           <div class="row">
             
             <!-- Longitudine -->
@@ -30,10 +29,13 @@
 
           </div>
 
-
-        <!-- </form> -->
       </div>
-      <div>{{address}}</div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-12">
+            <div class="" id="adress"></div>
+      </div>
     </div>
     <div class="row text-center">
       <div class="col-12">
@@ -51,7 +53,7 @@ export default {
       tt: window.tt,
       long: 9.191383,
       lat: 45.464211,
-      key: 'your key',
+      key: '',
     }
   },
 
@@ -60,6 +62,7 @@ export default {
   },
 
   methods:{
+    // recuperare mappa con tom tom api
     getMap(){
     var map = this.tt.map({
       key: this.key,
@@ -72,6 +75,7 @@ export default {
     this.addMarker(map);
     },
 
+    // Aggiunge segna posto sulle coordinata
     addMarker(map){
       var location = [this.long, this.lat];
       var popupOffsets = 25;
@@ -82,12 +86,17 @@ export default {
       marker.setPopup(popup).togglePopup();
     },
 
+    // Trasforma  longitudine e latitudine in indirizzo
     reverseGeocoding(marker, popup) { 
       this.tt.services.reverseGeocode({ 
           key: this.key, 
           position: marker.getLngLat() 
       }).then( function( result ){ 
           popup.setHTML(result.addresses[0].address.freeformAddress); 
+
+          // Aggiunge in un div l'indirizzo
+          var myDiv = document.getElementById("adress");
+          myDiv.innerHTML = result.addresses[0].address.freeformAddress;
       }) 
     },
     
@@ -101,7 +110,7 @@ export default {
 
 
 #map {
-    height: 80vh;
+    height: 50vh;
     width: 100%;
     border: 1px solid #d3d1d1;
     border-radius: 10px;
@@ -110,6 +119,10 @@ export default {
 
 input{
   margin-right: 20px;
+}
+
+#adress{
+  font-weight: bold;
 }
 
 
